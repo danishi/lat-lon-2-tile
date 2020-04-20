@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <title>タイル座標変換ツール</title>
+    <meta charset=utf-8>
+    <meta http-equiv=X-UA-Compatible content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name=description content="">
+    <meta name=keywords content="誤翻訳">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Cache-Control" content="no-store">
+    <meta http-equiv="Cache-Control" content="no-cache">
+    <meta http-equiv="Expires" content="-1">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+    <style>
+    main > .container {
+        padding: 60px 15px 0;
+    }
+
+    .container .text-muted {
+        margin: 20px 0;
+    }
+
+    #countor_area{
+        float: right;
+        margin: -15px 0;
+    }
+
+    .footer {
+        background-color: #d3d3d3;
+    }
+    .footer > .container {
+        padding-right: 15px;
+        padding-left: 15px;
+    }
+    </style>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-137472393-2"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-137472393-2');
+    </script>
+</head>
+<body class="d-flex flex-column h-100">
+    <header>
+        <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+            <a class="navbar-brand" href="#">タイル座標変換ツール</a>
+        </nav>
+    </header>
+    <main role="main" class="flex-shrink-0">
+        <div class="container">
+            <form id="submit_area">
+                <div class="form-group">
+                    <p></p>
+                    <p class="text-info">緯度経度をタイル座標、ピクセル座標に変換、またはピクセル座標を緯度経度に変換します。<p>
+                    <div class="input-group mb-3 lonLat">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">緯度</span>
+                        </div>
+                        <input required id="longitude" type="number" step="0.0000001" class="form-control" value="35.6812405">
+                        
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">経度</span>
+                        </div>
+                        <input required id="latitude" type="number" step="0.0000001" class="form-control" value="139.7649308">
+                        
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">縮尺</span>
+                        </div>
+                        <input required id="zoom" type="number" step="1" min="0" max="21" class="form-control" value="14">
+                    </div>
+
+                    <div class="input-group mb-3 tile">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">タイル座標X</span>
+                        </div>
+                        <input readonly id="tileX" type="number" step="1" class="form-control" value="">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">タイル座標Y</span>
+                        </div>
+                        <input readonly id="tileY" type="number" step="1" class="form-control" value="">
+
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">ピクセル座標X</span>
+                        </div>
+                        <input required id="pixelX" type="number" step="1" class="form-control" value="">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">ピクセル座標Y</span>
+                        </div>
+                        <input required id="pixelY" type="number" step="1" class="form-control" value="">
+                    </div>
+                </div>
+            </form>
+            <p></p>
+            <div class="card">
+                <div class="card-header">
+                    地図タイル
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-6 col-md-3">
+                            <strong>国土地理院</strong>
+                            <img id="japanMap" src="https://cyberjapandata.gsi.go.jp/xyz/std/14/14552/6451.png" class="img-fluid" alt="国土地理院タイル画像">
+                        </div>
+                        <div class="col-sm-6 col-md-3">
+                            <strong>OpenStreetMap</strong>
+                            <img id="osm" src="https://a.tile.openstreetmap.org/14/14552/6451.png" class="img-fluid" alt="OpenStreetMapタイル画像">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <p></p>
+            <div class="card">
+                <div class="card-header">
+                    Google マップ
+                </div>
+                <div class="card-body">
+                    <iframe id="iframe_map" src="https://maps.google.co.jp/maps?output=embed&q=東京駅" height="300" width="100%">
+                    </iframe>
+                </div>
+            </div>
+        </div>
+    </main>
+    <footer class="footer mt-auto py-1">
+        <div class="container">
+            <a href="https://www.blog.danishi.net/"><p class="text-muted">It works for me</p></a>
+        </div>
+    </footer>
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <!-- Optional JavaScript -->
+    <script>
+        const L = 85.05112878;
+        
+        var latLon2tile = function(lat, lon, zoom) {
+            lat = parseFloat(lat);
+            lon = parseFloat(lon);
+            zoom = parseInt(zoom);
+
+            var pixelX = parseInt(Math.pow(2, zoom + 7) * (lon / 180 + 1));
+            var tileX = parseInt(pixelX / 256);
+
+            var pixelY = parseInt((Math.pow(2, zoom + 7) / Math.PI) * ((-1 * Math.atanh(Math.sin((Math.PI / 180) * lat))) + Math.atanh(Math.sin((Math.PI / 180) * L))));
+            var tileY = parseInt(pixelY / 256);
+
+            $('#pixelX').val(pixelX);
+            $('#tileX').val(tileX);
+            $('#pixelY').val(pixelY);
+            $('#tileY').val(tileY);
+        };
+
+        var tile2LatLon = function(pixelX, pixelY, zoom) {
+            pixelX = parseInt(pixelX);
+            pixelY = parseInt(pixelY);
+            zoom = parseInt(zoom);
+
+            var tileX = parseInt(pixelX / 256);
+            var tileY = parseInt(pixelY / 256);
+            $('#tileX').val(tileX);
+            $('#tileY').val(tileY);
+
+            var lat = 180 * (pixelX / Math.pow(2, zoom + 7) - 1);
+            var lon = (180 / Math.PI) * (Math.asin(Math.tanh((-1 * Math.PI / Math.pow(2, zoom + 7) * pixelY) + Math.atanh(Math.sin(Math.PI / 180 * L)))));
+            $('#latitude').val(lat);
+            $('#longitude').val(lon);
+        };
+
+        var tileImageSetting = function(){
+            var japanUrlBase = "https://cyberjapandata.gsi.go.jp/xyz/std/";
+            var url = japanUrlBase
+                    + $('#zoom').val() + '/' + $('#tileX').val() + '/' + $('#tileY').val() + '.png'
+            ;
+            $('#japanMap').attr('src', url);
+
+            var osmUrlBase = "https://a.tile.openstreetmap.org/";
+            var url = osmUrlBase
+                    + $('#zoom').val() + '/' + $('#tileX').val() + '/' + $('#tileY').val() + '.png'
+            ;
+            $('#osm').attr('src', url);
+        };
+
+        var iframeSetting = function(lon, lat, zoom){
+            var urlBase = "https://maps.google.co.jp/maps?output=embed";
+            var url = urlBase
+                    + '&q=' + lon + ',' + lat
+                    + '&z=' + zoom
+            ;
+            $('#iframe_map')[0].contentWindow.location.replace(url);
+        };
+
+        $(function(){
+            latLon2tile($('#longitude').val(), $('#latitude').val(), $('#zoom').val());
+            tileImageSetting();
+            iframeSetting($('#longitude').val(), $('#latitude').val(), $('#zoom').val());
+        });
+                
+        $('.lonLat').on('change', function(event) {
+            event.stopPropagation()
+            latLon2tile($('#longitude').val(), $('#latitude').val(), $('#zoom').val());
+            tileImageSetting();
+            iframeSetting($('#longitude').val(), $('#latitude').val(), $('#zoom').val());
+        });
+
+        $('.tile').on('change', function(event) {
+            event.stopPropagation()
+            tile2LatLon($('#pixelX').val(), $('#pixelY').val(), $('#zoom').val());
+            tileImageSetting();
+            iframeSetting($('#longitude').val(), $('#latitude').val(), $('#zoom').val());
+        });
+    </script>
+</body>
+</html>
