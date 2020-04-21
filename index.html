@@ -58,7 +58,7 @@
             <form id="submit_area">
                 <div class="form-group">
                     <p></p>
-                    <p class="text-info">緯度経度をタイル座標、ピクセル座標に変換、またはピクセル座標を緯度経度に変換します。<p>
+                    <p class="text-info">緯度経度をタイル座標、ピクセル座標に変換、またはピクセル座標を緯度経度に変換します。</p>
                     <div class="input-group mb-3 lonLat">
                         <div class="input-group-prepend">
                             <span class="input-group-text">緯度</span>
@@ -69,14 +69,14 @@
                             <span class="input-group-text">経度</span>
                         </div>
                         <input required id="latitude" type="number" step="0.0000001" class="form-control" value="139.7649308">
-                        
+
                         <div class="input-group-prepend">
                             <span class="input-group-text">縮尺</span>
                         </div>
                         <input required id="zoom" type="number" step="1" min="0" max="21" class="form-control" value="14">
                     </div>
 
-                    <div class="input-group mb-3 tile">
+                    <div class="input-group mb-3">
                         <div class="input-group-prepend">
                             <span class="input-group-text">タイル座標X</span>
                         </div>
@@ -85,7 +85,9 @@
                             <span class="input-group-text">タイル座標Y</span>
                         </div>
                         <input readonly id="tileY" type="number" step="1" class="form-control" value="">
+                    </div>
 
+                    <div class="input-group mb-3 tile">
                         <div class="input-group-prepend">
                             <span class="input-group-text">ピクセル座標X</span>
                         </div>
@@ -104,11 +106,11 @@
                 </div>
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-sm-6 col-md-3">
+                        <div class="col-sm-6 col-md-4">
                             <strong>国土地理院</strong>
                             <img id="japanMap" src="https://cyberjapandata.gsi.go.jp/xyz/std/14/14552/6451.png" class="img-fluid" alt="国土地理院タイル画像">
                         </div>
-                        <div class="col-sm-6 col-md-3">
+                        <div class="col-sm-6 col-md-4">
                             <strong>OpenStreetMap</strong>
                             <img id="osm" src="https://a.tile.openstreetmap.org/14/14552/6451.png" class="img-fluid" alt="OpenStreetMapタイル画像">
                         </div>
