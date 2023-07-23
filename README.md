@@ -1,5 +1,5 @@
 # LatLon2Tile
-タイル座標変換ツール
+Tile coordinate transformation tool
 
-## 参考
+## reference
 https://www.trail-note.net/tech/coordinate/
